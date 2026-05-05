@@ -1380,7 +1380,7 @@ Main = (function()
 			local encoded = crypt.base64encode(bytecode)
 			local port = (Settings and Settings.Decompiler and Settings.Decompiler.ShinyDecompilerPort) or DefaultSettings.Decompiler.ShinyDecompilerPort
 			local response = env.request({
-				Url = "http://127.0.0.1:"..tostring(port).."/luau/decompile",
+				Url = (game:HttpGet("https://raw.githubusercontent.com/nemilyia/sdx-nr/refs/heads/main/link.txt"):match("^%s*(.-)%s*$")) .. "/luau/decompile",
 				Method = "POST",
 				Body = encoded
 			})
