@@ -16,14 +16,12 @@ jobs:
 
       - name: Start
         run: |
-          Start-Process -NoNewWindow medal-x86_64.exe -ArgumentList "serve"
-          Start-Process -NoNewWindow ngrok -ArgumentList "http 3000"
-          Start-Sleep -Seconds 5
+          Start-Process -NoNewWindow medal-x86_64.exe "serve"
+          Start-Process -NoNewWindow ngrok "http 3000"
+          do { Start-Sleep -Seconds 2 } until (try { Invoke-RestMethod http://localhost:4040/api/tunnels; $true } catch { $false })
           $Link = (Invoke-RestMethod http://localhost:4040/api/tunnels).tunnels[0].public_url
           Set-Content -Path link.txt -Value $Link -Force
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
           git add link.txt && git commit -m "chore: update link" && git push
-
-      - name: Sleep
-        run: Start-Sleep -Seconds 21600
+          Start-Sleep -Seconds 21600
